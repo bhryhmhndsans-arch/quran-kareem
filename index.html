@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Quran Kareem | القرآن الكريم</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial,"Tahoma",sans-serif;
+}
+
+body{
+  background:#061b14;
+  color:#fff;
+  min-height:100vh;
+}
+
+header{
+  background:linear-gradient(135deg,#063d2b,#087a4b);
+  padding:25px 15px;
+  text-align:center;
+  border-bottom:2px solid #d5b15a;
+}
+
+.logo{
+  font-size:30px;
+  font-weight:bold;
+  color:#f4d477;
+}
+
+.subtitle{
+  margin-top:8px;
+  color:#d9eee4;
+}
+
+.container{
+  width:min(1100px,94%);
+  margin:25px auto;
+}
+
+.search{
+  width:100%;
+  padding:15px;
+  border-radius:15px;
+  border:1px solid #277f5b;
+  background:#09271e;
+  color:white;
+  font-size:17px;
+  outline:none;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:15px;
+  margin-top:20px;
+}
+
+.card{
+  background:linear-gradient(145deg,#0b3023,#0a211a);
+  border:1px solid #176b4b;
+  border-radius:20px;
+  padding:22px;
+  cursor:pointer;
+  transition:.25s;
+  box-shadow:0 8px 25px #0005;
+}
+
+.card:hover{
+  transform:translateY(-5px);
+  border-color:#d5b15a;
+}
+
+.icon{
+  font-size:35px;
+  margin-bottom:12px;
+}
+
+.card h3{
+  color:#f2d274;
+  margin-bottom:8px;
+}
+
+.card p{
+  color:#bdd9cc;
+}
+
+.section{
+  display:none;
+  margin-top:25px;
+  background:#09251c;
+  border:1px solid #176b4b;
+  padding:20px;
+  border-radius:20px;
+}
+
+.section.active{
+  display:block;
+}
+
+.back{
+  background:#caa94e;
+  color:#061b14;
+  border:0;
+  padding:10px 18px;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:bold;
+  margin-bottom:20px;
+}
+
+.surah{
+  background:#0c3426;
+  border:1px solid #1d7754;
+  padding:15px;
+  margin:10px 0;
+  border-radius:15px;
+  cursor:pointer;
+}
+
+.surah:hover{
+  border-color:#d5b15a;
+}
+
+.ayah{
+  padding:20px 5px;
+  border-bottom:1px solid #1a5942;
+  line-height:2.2;
+  font-size:21px;
+}
+
+.ayah-number{
+  color:#e0c363;
+  font-size:14px;
+}
+
+audio{
+  width:100%;
+  margin:15px 0;
+}
+
+.quiz{
+  background:#0c3426;
+  padding:18px;
+  border-radius:15px;
+  margin:12px 0;
+}
+
+.option{
+  display:block;
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  background:#114b36;
+  border:1px solid #1f805a;
+  color:white;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.option:hover{
+  background:#176947;
+}
+
+.result{
+  margin-top:10px;
+  font-weight:bold;
+}
+
+.settings-item{
+  background:#0c3426;
+  padding:15px;
+  margin:10px 0;
+  border-radius:12px;
+}
+
+footer{
+  text-align:center;
+  padding:30px 10px;
+  margin-top:40px;
+  border-top:1px solid #176b4b;
+  color:#b9d8ca;
+}
+
+.creator{
+  color:#f1d16d;
+  font-weight:bold;
+  margin-top:8px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">☪ Quran Kareem</div>
+  <div class="subtitle">القرآن الكريم • الذكر • العلم • الهداية</div>
+</header>
+
+<div class="container">
+
+<input
+  id="search"
+  class="search"
+  placeholder="🔎 ابحث في أقسام التطبيق..."
+  oninput="searchCards()"
+>
+
+<div class="grid" id="home">
+
+<div class="card" onclick="openSection('quran')">
+<div class="icon">📖</div>
+<h3>القرآن الكريم</h3>
+<p>السور والآيات والقراءة</p>
+</div>
+
+<div class="card" onclick="openSection('hadith')">
+<div class="icon">🕌</div>
+<h3>الأحاديث</h3>
+<p>أحاديث نبوية مختارة</p>
+</div>
+
+<div class="card" onclick="openSection('bukhari')">
+<div class="icon">📕</div>
+<h3>صحيح البخاري</h3>
+<p>قسم الحديث الشريف</p>
+</div>
+
+<div class="card" onclick="openSection('tafsir')">
+<div class="icon">📚</div>
+<h3>التفسير</h3>
+<p>فهم معاني الآيات</p>
+</div>
+
+<div class="card" onclick="openSection('audio')">
+<div class="icon">🎧</div>
+<h3>التلاوات</h3>
+<p>استمع للقرآن الكريم</p>
+</div>
+
+<div class="card" onclick="openSection('azkar')">
+<div class="icon">🤲</div>
+<h3>الأذكار</h3>
+<p>أذكار الصباح والمساء</p>
+</div>
+
+<div class="card" onclick="openSection('stories')">
+<div class="icon">📜</div>
+<h3>قصص الأنبياء</h3>
+<p>قصص وعبر</p>
+</div>
+
+<div class="card" onclick="openSection('achievements')">
+<div class="icon">🏆</div>
+<h3>إنجازاتي</h3>
+<p>تابع تقدمك</p>
+</div>
+
+<div class="card" onclick="openSection('quiz')">
+<div class="icon">📝</div>
+<h3>اختبارات</h3>
+<p>اختبر معلوماتك الإسلامية</p>
+</div>
+
+<div class="card" onclick="openSection('settings')">
+<div class="icon">⚙️</div>
+<h3>الإعدادات</h3>
+<p>إعدادات التطبيق</p>
+</div>
+
+</div>
+
+
+<!-- القرآن -->
+
+<div id="quran" class="section">
+
+<button class="back" onclick="goHome()">← الرئيسية</button>
+
+<h2>📖 القرآن الكريم</h2>
+
+<div id="surahs">
+جاري تحميل السور...
+</div>
+
+</div>
+
+
+<!-- السورة -->
+
+<div id="surahView" class="section">
+
+<button class="back" onclick="openSection('quran')">← السور</button>
+
+<h2 id="surahTitle"></h2>
+
+<audio id="player" controls></audio>
+
+<div id="ayahs"></div>
+
+</div>
+
+
+<!-- الأحاديث -->
+
+<div id="hadith" class="section">
+
+<button class="back" onclick="goHome()">← الرئيسية</button>
+
+<h2>🕌 الأحاديث النبوية</h2>
+
+<div class="quiz">
+
+<p>
+قال رسول الله ﷺ:
+</p>
+
+<br>
+
+<p>
+"إنما الأعمال بالنيات"
+</p>
+
+<br>
+
+<small>
+حديث مشهور، ويُرجى الرجوع إلى مصدر حديث موثوق للتحقق من النص والتخريج الكامل.
+</small>
+
+</div>
+
+</div>
+
+
+<!-- البخاري -->
+
+<div id="bukhari" class="section">
+
+<button class="back" onclick="goHome()">← الرئيسية</button>
+
+<h2>📕 صحيح البخاري</h2>
+
+<div class="quiz">
+
+<h3>صحيح البخاري</h3>
+
+<p>
+هنا سيكون قسم صحيح البخاري الكامل بعد ربط التطبيق بمصدر حديث موثوق.
+</p>
+
+</div>
+
+</div>
+
+
+<!-- التفسير -->
+
+<div id="tafsir" class="section">
+
+<button class="back" onclick="goHome()">← الرئيسية</button>
+
+<h2>📚 التفسير</h2>
+
+<div class="quiz">
+
+<h3>تفسير القرآن</h3>
+
+<p>
+يمكن إضافة تفسير موثوق لكل آية وربطه بالقرآن عند استخدام مصدر API مناسب.
+</p>
+
+</div>
+
+</div>
+
+
+<!-- الصوت -->
+
+<div id="audio" class="section">
+
+<button class="back" onclick="goHome()">← الرئيسية</button>
+
+<h2>🎧 التلاوات</h2>
+
+<div class="quiz">
+
+<h3>مشغل القرآن الكريم</h3>
+
+<p>
+اختر سورة من قسم القرآن ثم اضغط عليها للاستماع.
+</p>
+
+</div>
+
+</div>
+
+
+<!-- الأذكار -->
+
+<div id="azkar" class="section">
+
+<button class="back" onclick="goHome()">← الرئيسية</button>
+
+<h2>🤲 الأذكار</h2>
+
+<div class="quiz">
+
+<h3>أذكار الصباح والمساء</h3>
+
+<p>سبحان الله</p>
+<p>الحمد لله</p>
+<p>الله أكبر</p>
+<p>لا إله إلا الله</p>
+
+</div>
+
+</div>
+
+
+<!-- القصص -->
+
+<div id="stories" class="section">
+
+<button class="back" onclick="goHome()">← الرئيسية</button>
+
+<h2>📜 قصص الأنبياء</h2>
+
+<div class="quiz">
+
+<h3>قصص وعبر</h3>
+
+<p>
+سيتم إضافة قصص الأنبياء بشكل منظم مع مصادر موثوقة.
+</p>
+
+</div>
+
+</div>
+
+
+<!-- الإنجازات -->
+
+<div id="achievements" class="section">
+
+<button class="back" onclick="goHome()">← الرئيسية</button>
+
+<h2>🏆 إنجازاتي</h2>
+
+<div class="grid">
+
+<div class="card">
+<div class="icon">📖</div>
+<h3>السور المقروءة</h3>
+<p id="readCount">0</p>
+</div>
+
+<div class="card">
+<div class="icon">⭐</div>
+<h3>النقاط</h3>
+<p id="points">0</p>
+</div>
+
+<div class="card">
+<div class="icon">🔥</div>
+<h3>أيام الاستمرار</h3>
+<p>1 يوم</p>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- الاختبارات -->
+
+<div id="quiz" class="section">
+
+<button class="back" onclick="goHome()">← الرئيسية</button>
+
+<h2>📝 اختبر معلوماتك</h2>
+
+<div class="quiz">
+
+<h3>1️⃣ ما هي أول سورة في القرآن؟</h3>
+
+<button class="option" onclick="answer(this,true)">
+الفاتحة
+</button>
+
+<button class="option" onclick="answer(this,false)">
+البقرة
+</button>
+
+<button class="option" onclick="answer(this,false)">
+الناس
+</button>
+
+<div class="result"></div>
+
+</div>
+
+
+<div class="quiz">
+
+<h3>2️⃣ كم عدد سور القرآن الكريم؟</h3>
+
+<button class="option" onclick="answer(this,false)">
+100
+</button>
+
+<button class="option" onclick="answer(this,true)">
+114
+</button>
+
+<button class="option" onclick="answer(this,false)">
+120
+</button>
+
+<div class="result"></div>
+
+</div>
+
+</div>
+
+
+<!-- الإعدادات -->
+
+<div id="settings" class="section">
+
+<button class="back" onclick="goHome()">← الرئيسية</button>
+
+<h2>⚙️ الإعدادات</h2>
+
+<div class="settings-item">
+🔔 الإشعارات
+</div>
+
+<div class="settings-item">
+🌙 الوضع الليلي
+</div>
+
+<div class="settings-item">
+🎨 اللون الأخضر الإسلامي
+</div>
+
+<div class="settings-item">
+🌐 اللغة: العربية
+</div>
+
+<br>
+
+<p class="creator">
+Designed by Engineer Anas Gamal
+</p>
+
+</div>
+
+</div>
+
+
+<footer>
+
+<div>☪ Quran Kareem</div>
+
+<div class="creator">
+Designed by Engineer Anas Gamal
+</div>
+
+<div>
+© 2026 Quran Kareem
+</div>
+
+</footer>
+
+
+<script>
+
+const API =
+"https://api.alquran.cloud/v1";
+
+function openSection(id){
+
+document.getElementById("home").style.display="none";
+
+document.querySelectorAll(".section")
+.forEach(x=>x.classList.remove("active"));
+
+document.getElementById(id)
+.classList.add("active");
+
+window.scrollTo(0,0);
+
+}
+
+function goHome(){
+
+document.querySelectorAll(".section")
+.forEach(x=>x.classList.remove("active"));
+
+document.getElementById("home").style.display="grid";
+
+window.scrollTo(0,0);
+
+}
+
+
+function loadSurahs(){
+
+fetch(API+"/surah")
+
+.then(res=>res.json())
+
+.then(data=>{
+
+let html="";
+
+data.data.forEach(s=>{
+
+html+=`
+
+<div class="surah"
+onclick="loadSurah(${s.number},'${s.name}')">
+
+<strong>${s.number}. ${s.name}</strong>
+
+<br>
+
+<span>
+${s.englishName}
+</span>
+
+<br>
+
+<small>
+عدد الآيات: ${s.numberOfAyahs}
+</small>
+
+</div>
+
+`;
+
+});
+
+document.getElementById("surahs")
+.innerHTML=html;
+
+})
+
+.catch(()=>{
+
+document.getElementById("surahs")
+.innerHTML=
+"تعذر تحميل السور. تأكد من اتصال الإنترنت.";
+
+});
+
+}
+
+
+function loadSurah(number,name){
+
+openSection("surahView");
+
+document.getElementById("surahTitle")
+.innerText=name;
+
+document.getElementById("ayahs")
+.innerHTML=
+"جاري تحميل الآيات...";
+
+document.getElementById("player").src=
+"https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/"
++number+".mp3";
+
+fetch(API+"/surah/"+number+"/quran-uthmani")
+
+.then(res=>res.json())
+
+.then(data=>{
+
+let html="";
+
+data.data.ayahs.forEach(a=>{
+
+html+=`
+
+<div class="ayah">
+
+${a.text}
+
+<span class="ayah-number">
+﴿${a.numberInSurah}﴾
+</span>
+
+</div>
+
+`;
+
+});
+
+document.getElementById("ayahs")
+.innerHTML=html;
+
+let old=
+Number(localStorage.getItem("readCount")||0);
+
+localStorage.setItem("readCount",old+1);
+
+document.getElementById("readCount")
+.innerText=old+1;
+
+})
+
+.catch(()=>{
+
+document.getElementById("ayahs")
+.innerText=
+"تعذر تحميل الآيات.";
+
+});
+
+}
+
+
+function answer(button,correct){
+
+let result=
+button.parentElement.querySelector(".result");
+
+if(correct){
+
+result.innerText=
+"✅ إجابة صحيحة!";
+
+let p=
+Number(localStorage.getItem("points")||0)+10;
+
+localStorage.setItem("points",p);
+
+document.getElementById("points")
+.innerText=p;
+
+}else{
+
+result.innerText=
+"❌ إجابة غير صحيحة.";
+
+}
+
+}
+
+
+function searchCards(){
+
+let text=
+document.getElementById("search")
+.value.toLowerCase();
+
+let cards=
+document.querySelectorAll("#home .card");
+
+cards.forEach(card=>{
+
+let content=
+card.innerText.toLowerCase();
+
+card.style.display=
+content.includes(text)
+?"block"
+:"none";
+
+});
+
+}
+
+
+window.onload=function(){
+
+loadSurahs();
+
+document.getElementById("readCount")
+.innerText=
+localStorage.getItem("readCount")||0;
+
+document.getElementById("points")
+.innerText=
+localStorage.getItem("points")||0;
+
+};
+
+</script>
+
+</body>
+</html>
